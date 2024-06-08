@@ -1,3 +1,4 @@
 class Variable {
-  static const String baseUrl = 'http://10.1.10.134:8000';
+  static const String baseUrl =
+      'https://bfde1f95-28d0-4371-9d6c-a52f8028b73c.mock.pstmn.io';
 }

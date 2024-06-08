@@ -1,17 +1,28 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mini_booking_app/presentation/home/bloc/product/product_bloc.dart';
 
 import '../../../../core/core.dart';
 import '../widgets_home.dart';
 
 class HomeSearch extends StatefulWidget {
-  const HomeSearch({super.key});
+  final TextEditingController searchController;
+  final String location;
+  final VoidCallback onTap;
+  const HomeSearch({
+    super.key,
+    required this.searchController,
+    required this.location,
+    required this.onTap,
+  });
 
   @override
   State<HomeSearch> createState() => _HomeSearchState();
 }
 
 class _HomeSearchState extends State<HomeSearch> {
-  late final TextEditingController searchController;
+  //late final TextEditingController searchController;
   final FocusNode _focusNode = FocusNode();
   bool _isTextFieldFocused = false;
   bool _showFilters = false;
@@ -19,7 +30,6 @@ class _HomeSearchState extends State<HomeSearch> {
 
   @override
   void initState() {
-    searchController = TextEditingController();
     _focusNode.addListener(_handleFocusChange);
     super.initState();
   }
@@ -32,7 +42,6 @@ class _HomeSearchState extends State<HomeSearch> {
 
   @override
   void dispose() {
-    searchController.dispose();
     _focusNode.removeListener(_handleFocusChange);
     _focusNode.dispose();
     super.dispose();
@@ -60,7 +69,7 @@ class _HomeSearchState extends State<HomeSearch> {
           children: [
             Expanded(
               child: CustomTextField(
-                controller: searchController,
+                controller: widget.searchController,
                 label: 'Enter your destination',
                 showLabel: false,
                 borderRadius: 25,
@@ -73,7 +82,14 @@ class _HomeSearchState extends State<HomeSearch> {
                           right: 10,
                         ),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (widget.searchController.text.isNotEmpty) {
+                              context.read<ProductBloc>().add(
+                                    ProductEvent.searchLocation(
+                                        widget.searchController.text),
+                                  );
+                            }
+                          },
                           iconSize: 18,
                           focusColor: AppColors.primary,
                           color: AppColors.primary,
@@ -102,24 +118,31 @@ class _HomeSearchState extends State<HomeSearch> {
           ],
         ),
         const SpaceHeight(5),
-        const Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.location_pin,
-              color: AppColors.primary,
-              size: 14,
-            ),
-            SpaceWidth(5),
-            Text(
-              'Juanda International Airport, Surabaya, Indonesia',
-              style: TextStyle(
-                fontSize: 12,
-                color: AppColors.black,
-                fontWeight: FontWeight.normal,
+        InkWell(
+          onTap: widget.onTap,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.location_pin,
+                color: AppColors.primary,
+                size: 14,
               ),
-            ),
-          ],
+              const SpaceWidth(5),
+              Flexible(
+                child: Text(
+                  widget.location,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),

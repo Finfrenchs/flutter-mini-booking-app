@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_mini_booking_app/core/assets/assets.gen.dart';
 
+import 'dart:convert';
+
 class HotelResponseModel {
   final String name;
   final double lat;
@@ -21,23 +23,18 @@ class HotelResponseModel {
     required this.image,
   });
 
-  factory HotelResponseModel.fromJson(String str) =>
-      HotelResponseModel.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory HotelResponseModel.fromMap(Map<String, dynamic> json) =>
+  factory HotelResponseModel.fromJson(Map<String, dynamic> json) =>
       HotelResponseModel(
         name: json["name"],
-        lat: json["lat"]?.toDouble(),
-        lng: json["lng"]?.toDouble(),
-        rate: json["rate"]?.toDouble(),
-        price: json["price"],
-        distance: json["distance"]?.toDouble(),
-        image: json["image"],
+        lat: json["lat"]?.toDouble() ?? 0.0,
+        lng: json["lng"]?.toDouble() ?? 0.0,
+        rate: json["rate"]?.toDouble() ?? 0.0,
+        price: json["price"] ?? '',
+        distance: json["distance"]?.toDouble() ?? 0.0,
+        image: json["image"] ?? '',
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         "name": name,
         "lat": lat,
         "lng": lng,
@@ -46,6 +43,11 @@ class HotelResponseModel {
         "distance": distance,
         "image": image,
       };
+
+  static List<HotelResponseModel> fromJsonList(String str) {
+    final jsonData = json.decode(str) as List;
+    return jsonData.map((e) => HotelResponseModel.fromJson(e)).toList();
+  }
 }
 
 List<HotelResponseModel> hotels = [

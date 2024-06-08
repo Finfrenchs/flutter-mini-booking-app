@@ -55,7 +55,7 @@ class ProductCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
-                      image: AssetImage(image ?? ''),
+                      image: NetworkImage(image ?? ''),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -78,12 +78,16 @@ class ProductCard extends StatelessWidget {
               ],
             ),
             const SpaceHeight(10),
-            Text(
-              name,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black,
+            Flexible(
+              child: Text(
+                name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
+                ),
               ),
             ),
             const SpaceHeight(5),
@@ -155,26 +159,30 @@ class ProductCard extends StatelessWidget {
               ],
             ),
             const SpaceHeight(10),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: price.currencyFormatRp,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+            Flexible(
+              child: RichText(
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: price.currencyFormatRp,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
                     ),
-                  ),
-                  const TextSpan(
-                    text: ' /night',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.black,
+                    const TextSpan(
+                      text: ' /night',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        color: AppColors.black,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

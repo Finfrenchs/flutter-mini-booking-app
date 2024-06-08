@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_mini_booking_app/core/core.dart';
 import 'package:flutter_mini_booking_app/data/models/response/hotel_response_model.dart';
+import 'package:flutter_mini_booking_app/presentation/home/bloc/product/product_bloc.dart';
 
 import '../widgets/widgets_home.dart';
 
@@ -18,6 +20,12 @@ class DetailProductPage extends StatefulWidget {
 
 class _DetailProductPageState extends State<DetailProductPage> {
   @override
+  void initState() {
+    context.read<ProductBloc>().add(const ProductEvent.generateTips());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -27,7 +35,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const DetailAppBar(),
-            DetailContain(
+            DetailContent(
               data: widget.data,
             ),
           ],
